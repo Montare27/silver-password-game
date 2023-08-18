@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {ChangeDetectorRef, Component, SimpleChanges} from '@angular/core';
 import {Rule} from "./rule/rules/rule";
 import {GameService} from "./rule/game.service";
 
@@ -14,24 +14,24 @@ export class AppComponent {
 
   length: number = 0;
 
-  isAllTasksComplete: boolean = true;
-
   actualRules: Rule[] = [];
 
-  constructor(private gameService: GameService) {
+  constructor(private gameService: GameService, private cdRef: ChangeDetectorRef) {
     this.actualRules = gameService.getActualRules;
     this.actualRules.forEach((rule, index) => console.log(index + " desc: " + rule.description))
+  }
+
+  onStatusChange(status: boolean) {
+    let isFailed = this.actualRules.some(rule => !rule.status);
+
+    if(!isFailed) {
+      this.gameService.upLevel();
+      this.cdRef.detectChanges();
+    }
   }
 
   onPasswordChange(event: Event): void {
     this.password = (event.target as any).value;
     this.length = this.password.length;
-  }
-
-  checkTask(status: boolean) {
-    if(!status)
-      this.isAllTasksComplete = false;
-    else
-      this.gameService.upLevel();
   }
 }

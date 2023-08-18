@@ -13,7 +13,8 @@
     <app-rule
       [rule]="rule"
       [password]="password"
-      (successEvent)="checkTask($event)"
+      (status) = "onStatusChange($event)"
+
     />
   </div>
 

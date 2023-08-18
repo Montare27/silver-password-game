@@ -14,13 +14,11 @@ export class RuleComponent {
   password: string = '';
 
   @Output()
-  successEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
-
-  status: boolean = false;
+  status: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   checkPassword() {
-    this.status = this.rule.check(this.password);
-    this.successEvent.emit(this.status);
+    this.rule.status = this.rule.check(this.password);
+    this.status.emit(this.rule.status);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -29,12 +27,5 @@ export class RuleComponent {
     }
   }
 
-  constructor() {
-    if(this.rule == null)
-      console.log('rule is null')
-    else
-      console.log('password:' + this.password + "rule-title: " + this.rule.description)
-    // console.log('rule_id ' + this.rule.id + ' rule_desc ' + this.rule.description + ' pass ' + this.password + ' status ' + this.status )
-    // this.checkPassword();
-  }
+
 }

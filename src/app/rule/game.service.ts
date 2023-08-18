@@ -29,4 +29,8 @@ export class GameService {
       this.level ++;
     }
   }
+
+  private sortRules() {
+    this.actualRules.slice().sort((a, b) => a.status === b.status ? 0 : (a.status ? 1 : -1));
+  }
 }
